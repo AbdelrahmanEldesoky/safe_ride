@@ -26,7 +26,7 @@ class User extends Authenticatable implements HasMedia
         'email', 'password', 'username', 'contact_number', 'gender', 'email_verified_at', 'first_name', 'last_name',
         'user_type', 'player_id', 'fcm_token', 'fleet_id', 'latitude', 'longitude', 'last_notification_seen',
         'status', 'is_online', 'is_available', 'uid', 'login_type', 'display_name', 'timezone',
-        'service_id', 'is_verified_driver', 'last_location_update_at', 'front_image', 'back_image'
+        'service_id', 'is_verified_driver', 'last_location_update_at', 'front_image', 'back_image','verify_code'
     ];
 
     /**

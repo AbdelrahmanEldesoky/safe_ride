@@ -20,7 +20,7 @@ use App\Http\Controllers\WhysmsController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/send-bulk-sms', [WhysmsController::class, 'sendBulkSMS']);
+Route::post('verify', [API\UserController::class, 'verifyOtp']);
 Route::post('register',[API\UserController::class, 'register']);
 Route::post('driver-register',[API\UserController::class, 'driverRegister']);
 Route::post('login',[API\UserController::class,'login']);
