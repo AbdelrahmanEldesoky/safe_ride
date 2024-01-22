@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DriverDocument;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\DriverResource;
 use Illuminate\Support\Facades\Password;
@@ -21,8 +22,9 @@ class UserController extends Controller
 {
     public function register(UserRequest $request)
     {
+        // dd(1);
         $input = $request->all();
-
+// dd($input);
         $password = $input['password'];
         $input['user_type'] = isset($input['user_type']) ? $input['user_type'] : 'rider';
         $input['password'] = Hash::make($password);
@@ -33,6 +35,7 @@ class UserController extends Controller
         }
 
         $input['display_name'] = $input['first_name']." ".$input['last_name'];
+        // dd($input);
         $user = User::create($input);
         $user->assignRole($input['user_type']);
 
@@ -57,7 +60,9 @@ class UserController extends Controller
 
     public function driverRegister(DriverRequest $request)
     {
+        // dd(1);
         $input = $request->all();
+
         $password = $input['password'];
         $input['user_type'] = isset($input['user_type']) ? $input['user_type'] : 'driver';
         $input['password'] = Hash::make($password);
@@ -66,6 +71,7 @@ class UserController extends Controller
 
         $input['display_name'] = $input['first_name']." ".$input['last_name'];
         $input['is_available'] = 1;
+        // dd($input);
         $user = User::create($input);
         $user->assignRole($input['user_type']);
 
@@ -248,7 +254,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateProfile(UserRequest $request)
+    public function updateProfile(UserUpdateRequest $request)
     {
         $user = Auth::user();
         if($request->has('id') && !empty($request->id)){

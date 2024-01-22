@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 
 class DriverRequest extends FormRequest
@@ -29,22 +30,64 @@ class DriverRequest extends FormRequest
     {
         $method = strtolower($this->method());
         $user_id = $this->route()->driver;
+        $user_type =isset(request()->user_type)?request()->user_type:'driver';
 
         $rules = [];
         switch ($method) {
             case 'post':
                 $rules = [
-                    'username' => 'required|unique:users,username',
+                    'username' => [
+                        'required',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type);
+                        }),
+                    ],
+                    'email' => [
+                        'email',
+                        'nullable',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type);
+                        }),
+                    ],
+                    'contact_number' => [
+                        'max:20',
+                        'required',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type);
+                        }),
+                    ],
                     'password' => 'required|min:8',
-                    'email' => 'nullable|email|unique:users,email',
-                    'contact_number' => 'required|max:20|unique:users,contact_number',
+
                 ];
                 break;
             case 'patch':
                 $rules = [
-                    'username'  => 'required|unique:users,username,'.$user_id,
-                    'email'     => 'nullable|email|unique:users,email,'.$user_id,
-                    'contact_number' => 'required|max:20|unique:users,contact_number,'.$user_id,
+                    'username' => [
+                        'required',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type)->where('id', '!=', $user_id);
+                        }),
+                    ],
+                    'email' => [
+                        'email',
+                        'nullable',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type)->where('id', '!=', $user_id);
+                        }),
+                    ],
+                    'contact_number' => [
+                        'max:20',
+                        'required',
+                        Rule::unique('users')->where(function ($query) use ($user_type, $user_id) {
+                            // Add a condition to check for the specific user type
+                            return $query->where('user_type', $user_type)->where('id', '!=', $user_id);
+                        }),
+                    ],
                 ];
                 break;
         }
