@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Models\User as ModelsUser;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use User;
-
-class WhysmsController extends Controller
+class SMSService
 {
-    public function sendBulkSMS(Request $request)
+    public function sendSMS($phone, $code)
     {
         // Set the API endpoint
+        // dd($phone);
         $endpoint = 'https://bulk.whysms.com/api/v3/sms/send';
 
         // Set the API token
@@ -19,10 +15,10 @@ class WhysmsController extends Controller
 
         // Set the request parameters
         $params = [
-            'recipient' => '+201200816003',
+            'recipient' => "+2".$phone,
             'sender_id' => 'WhySMS Test',
             'type' => 'plain',
-            'message' => 'This is a test message',
+            'message' => 'This is otp Code '.$code,
         ];
 
         $curl = curl_init();
@@ -55,5 +51,5 @@ class WhysmsController extends Controller
 
         // Close the cURL session
         curl_close($curl);
-}
+    }
 }

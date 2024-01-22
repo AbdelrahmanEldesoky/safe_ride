@@ -38,6 +38,7 @@ return array(
     'add_button_form' => 'إضافة :form جديدة',
     'cancel' => 'إلغاء',
     'select_name' => 'اختر :select',
+    'faild_otp'=>'هذا الرمز غير صحيح',
     'save_form' => 'تم حفظ :form بنجاح',
     'update_form' => 'تم تحديث :form بنجاح',
     'delete_form' => 'تم حذف :form بنجاح',
