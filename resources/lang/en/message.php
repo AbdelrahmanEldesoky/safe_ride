@@ -36,6 +36,7 @@
   'add_button_form' => 'Add New :form',
   'cancel' => 'Cancel',
   'faild_otp'=>'Wrong OTP',
+  'resendOtp'=>"otp sent successfully please check your phone",
   'save_form' => ':form has been save successfully',
   'update_form' => ':form has been updated successfully',
   'delete_form' => ':form has been deleted successfully',
