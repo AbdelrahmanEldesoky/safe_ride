@@ -82,7 +82,7 @@ class UserController extends Controller
         $user->assignRole($input['user_type']);
         $smsService = new SMSService;
         $smsService->sendSMS($user->contact_number, $user->verify_code);
-        
+
         if ($request->has('user_detail') && $request->user_detail != null) {
             $user->userDetail()->create($request->user_detail);
         }
@@ -109,7 +109,7 @@ class UserController extends Controller
         $data = $request->all();
         $validation = validator($data, [
             'otp' => 'required',
-            'phone' => 'required',
+            'contact_number' => 'required|exists:users,contact_number',
             'user_type' => 'required'
         ]);
         if ($validation->fails()) {
@@ -117,7 +117,7 @@ class UserController extends Controller
             return json_message_response($validation->getMessageBag(), 400);
         }
         // dd($validation);
-        $user = User::where('contact_number', $request->phone)->where('user_type', $request->user_type)->first();
+        $user = User::where('contact_number', $request->contact_number)->where('user_type', $request->user_type)->first();
         // dd($user);
         if ($user && $user->verify_code == $request->otp) {
             if ($user->status == 'banned') {
@@ -158,6 +158,36 @@ class UserController extends Controller
         return json_custom_response($response);
 
     }
+    public function resendOtp(Request $request){
+
+        $data = $request->all();
+        $validation = validator($data, [
+            'contact_number' => 'required|exists:users,contact_number',
+            'user_type' => 'required'
+        ]);
+        if ($validation->fails()) {
+            // dd(1);
+            return json_message_response($validation->getMessageBag(), 400);
+        }
+        // dd($input);
+         $user=User::where('contact_number', $request->contact_number)->where('user_type', $request->user_type)->first();
+         $user->update([
+            'verify_code'=> rand(1000, 9999)
+        ]);
+
+        $smsService = new SMSService;
+        $smsService->sendSMS($user->contact_number, $user->verify_code);
+
+        $message = __('message.resendOtp');
+
+        $response = [
+            'message' => $message,
+            'data' => true
+        ];
+        return json_custom_response($response);
+
+    }
+
     public function login(Request $request)
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password'), 'user_type' => request('user_type')])) {
