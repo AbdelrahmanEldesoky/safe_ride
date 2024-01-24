@@ -119,12 +119,12 @@ class UserController extends Controller
         // dd($validation);
         $user = User::where('contact_number', $request->contact_number)->where('user_type', $request->user_type)->first();
         // dd($user);
+
         if ($user && $user->verify_code == $request->otp) {
             if ($user->status == 'banned') {
                 $message = __('message.account_banned');
                 return json_message_response($message, 400);
             }
-
             if (request('player_id') != null) {
                 $user->player_id = request('player_id');
             }
@@ -132,7 +132,8 @@ class UserController extends Controller
             if (request('fcm_token') != null) {
                 $user->fcm_token = request('fcm_token');
             }
-
+            $user->update(['verify_check'=>1]);
+            $user = $user->fresh();
             $user->save();
 
             $success = $user;
