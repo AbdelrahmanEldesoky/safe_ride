@@ -17,6 +17,10 @@ use App\Http\Controllers\WhysmsController;
 |
 */
 
+
+
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -27,6 +31,8 @@ Route::post('driver-register',[API\UserController::class, 'driverRegister']);
 Route::post('login',[API\UserController::class,'login']);
 Route::post('forget-password',[ API\UserController::class,'forgetPassword']);
 Route::post('social-login',[ API\UserController::class, 'socialLogin' ]);
+Route::get('estimate', [ API\RideServiceController::class, 'getList' ]);
+Route::post('estimate/{id}', [ API\RideServiceController::class, 'estimatePriceTime' ]);
 Route::get('user-list',[API\UserController::class, 'userList']);
 Route::get('user-detail',[API\UserController::class, 'userDetail']);
 
@@ -34,6 +40,7 @@ Route::get('document-list', [ API\DocumentController::class, 'getList' ] );
 
 Route::get('service-list', [ API\ServiceController::class, 'getList' ]);
 Route::post('estimate-price-time', [ API\ServiceController::class, 'estimatePriceTime' ]);
+
 Route::get('appsetting', [ API\DashboardController::class, 'appsetting'] );
 Route::get('near-by-driver',[ App\Http\Controllers\HomeController::class, 'driverListMap' ]);
 
@@ -99,6 +106,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('additional-fees-list', [ API\AdditionalFeesController::class, 'getList'] );
     Route::get('logout',[ API\UserController::class, 'logout']);
 });
+
 
 Route::get('place-autocomplete-api', [ API\RideRequestController::class, 'placeAutoComplete' ] );
 Route::get('place-detail-api', [ API\RideRequestController::class, 'placeDetail' ] );
