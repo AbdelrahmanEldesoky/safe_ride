@@ -40,6 +40,24 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 */
 
 require __DIR__.'/auth.php';
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/create-storage-link', function () {
+    // Run the storage:link command
+    Artisan::call('storage:link');
+
+    // Check if the command ran successfully
+    $output = Artisan::output();
+
+    return "Storage link created: <br>" . nl2br($output);
+});
+
+Route::get('/cach', function () {
+Artisan::call('optimize:clear');
+return "clear cach";
+});
+
+
 
 
 Route::get('/mqtt/publish/{topic}/{message}', [ HomeController::class, 'SendMsgViaMqtt' ]);
