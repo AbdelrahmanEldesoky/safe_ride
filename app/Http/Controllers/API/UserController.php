@@ -41,8 +41,8 @@ class UserController extends Controller
         // dd($input);
         $user = User::create($input);
         $user->assignRole($input['user_type']);
-        $smsService = new SMSService;
-        $smsService->sendSMS($user->contact_number, $user->verify_code);
+        // $smsService = new SMSService;
+        // $smsService->sendSMS($user->contact_number, $user->verify_code);
         if ($request->has('user_detail') && $request->user_detail != null) {
             $user->userDetail()->create($request->user_detail);
         }
@@ -80,8 +80,8 @@ class UserController extends Controller
         // dd($input);
         $user = User::create($input);
         $user->assignRole($input['user_type']);
-        $smsService = new SMSService;
-        $smsService->sendSMS($user->contact_number, $user->verify_code);
+        // $smsService = new SMSService;
+        // $smsService->sendSMS($user->contact_number, $user->verify_code);
 
         if ($request->has('user_detail') && $request->user_detail != null) {
             $user->userDetail()->create($request->user_detail);
@@ -176,8 +176,8 @@ class UserController extends Controller
             'verify_code'=> rand(1000, 9999)
         ]);
 
-        $smsService = new SMSService;
-        $smsService->sendSMS($user->contact_number, $user->verify_code);
+        // $smsService = new SMSService;
+        // $smsService->sendSMS($user->contact_number, $user->verify_code);
 
         $message = __('message.resendOtp');
 
